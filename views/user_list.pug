@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  
+  ul
+    - user_list.sort(function(a, b) {let textA = a.username.toUpperCase(); let textB = b.username.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+    each user in user_list
+      li 
+        | Username: 
+        a(href=user.url) #{user.username} 
+        | , Password: 
+        |  #{user.password}
+
+    else
+      li There are no users.

@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each post in post_list
+      li= post.content 
+        |  Lähettäjä: 
+        | #{post.creator.username}
+        | , Lähetysaika: 
+        | #{post.time_created}
+
+    else
+      li There are no posts.

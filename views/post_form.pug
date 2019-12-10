@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='content') Post:
+      textarea#content.form-control(type='textarea', placeholder='Type your message here' name='content' rows='3' required='true' value=(undefined===post ? '' : post.content)) #{undefined===post ? '' : post.content}
+    div.form-group
+      label(for='creator') Creator:
+      select#creator.form-control(type='select', placeholder='Select user' name='creator' required='true' )
+        - users.sort(function(a, b) {let textA = a.username.toUpperCase(); let textB = b.username.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        for user in users
+          if post
+            option(value=user._id selected=(user._id.toString()==post.creator ? 'selected' : false) ) #{user.username}
+          else
+            option(value=user._id) #{user.username}
+    button.btn.btn-primary(type='submit') Send
+
+  if errors 
+    ul
+      for error in errors
+        li!= error.msg
