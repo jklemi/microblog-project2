@@ -5,10 +5,10 @@
  */
 
 // Reading env variables
-var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
+/*var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
     mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
-    mongoURLLabel = "";
+    mongoURLLabel = ""; */
 
 var app = require('../app');
 var debug = require('debug')('microblog-courseproject:server');
@@ -18,7 +18,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(port || '3000');
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**

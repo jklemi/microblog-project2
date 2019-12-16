@@ -23,7 +23,7 @@ var app = express();
 var mongoose = require('mongoose');
 
 // Reading env variables
-var mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
+/*var mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
     mongoURLLabel = "";
 
 if (mongoURL == null) {
@@ -61,12 +61,12 @@ if (mongoURL == null) {
     mongoURLLabel += mongoHost + ':' + mongoPort + '/' + mongoDatabase;
     mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;
   }
-}
+} */
 
-/*var mongoDB = 'mongodb+srv://juusok:koppaNen@cluster0-a7gqf.mongodb.net/microblog?retryWrites=true&w=majority';
-mongoose.connect(mongoDB, { useNewUrlParser: true }); */
+var mongoDB = 'mongodb+srv://juusok:koppaNen@cluster0-a7gqf.mongodb.net/microblog?retryWrites=true&w=majority';
+mongoose.connect(mongoDB, { useNewUrlParser: true });
 
-mongoose.connect(mongoURL);
+//mongoose.connect(mongoURL);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
