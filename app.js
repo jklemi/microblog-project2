@@ -63,7 +63,7 @@ if (mongoURL == null) {
   }
 } */
 
-var mongoDB = 'mongodb+srv://aki:akinsalasana@cluster0-a7gqf.mongodb.net/microblog?retryWrites=true&w=majority';
+var mongoDB = 'mongodb+srv://<username>:<password>@cluster0-a7gqf.mongodb.net/microblog?retryWrites=true&w=majority';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 //mongoose.connect(mongoURL);
