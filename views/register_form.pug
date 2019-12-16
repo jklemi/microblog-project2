@@ -2,6 +2,11 @@ extends layout
 
 block content
   h1 #{title}
+  p.expl Enter the username and password you would like to use on this site.
+  br
+  p.expl Both must be 3-50 characters in length and contain only letters and numbers.
+  br
+  p.expl No email confirmation is needed.
 
   form(method='POST' action='')
     div.form-group
@@ -9,7 +14,7 @@ block content
       input#username.form-control(type='text' name='username' value=(undefined===user ? '' : user.username))
       label(for='password') Password:
       input#password.form-control(type='password' name='password' value=(undefined===user ? '' : user.password))
-    button.btn.btn-primary(type='submit') Submit
+    button.btn.btn-primary(type='submit') Register
 
   if errors 
    ul

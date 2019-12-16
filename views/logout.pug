@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= title
+
+  form(action='' method='post')
+    button.btn.btn-primary(type='submit') Yes
+
+  form(action='/home' method='get')
+    button.btn.btn-secondary(type='submit') No

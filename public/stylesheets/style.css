@@ -3,3 +3,19 @@
     padding: 0;
     list-style: none;
 }
+
+h2 {
+    color: red;
+    font-family: "Times New Roman", Times, serif;
+}
+
+p.desc {
+    font-style: italic;
+    font-size: 14px;
+    color: gray;
+}
+
+p.expl {
+    font-size: 16px;
+    font-family: Tahoma, Geneva, sans-serif;
+}

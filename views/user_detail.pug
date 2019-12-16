@@ -1,0 +1,19 @@
+extends layout
+
+block content
+
+  h1 #{pageUser.username}
+  p Here is a list of all posts made by #{pageUser.username}
+  
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Posts
+
+    each post in users_posts
+      li
+        | #{post.content}
+        br
+        p.desc #{post.creator.username} | #{post.time_created_formatted}
+
+    else
+      li This user has not made any posts.

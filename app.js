@@ -10,6 +10,9 @@ var session = require('express-session'),
   bodyParser = require('body-parser');
 var bcrypt = require('bcrypt');
 
+var User = require('./models/user');
+var Post = require('./models/post');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var homeRouter = require('./routes/home');  //Import routes for "home" area of site
@@ -23,7 +26,17 @@ mongoose.connect(mongoDB, { useNewUrlParser: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-// Passport.js configuration
+// Session and passport.js configuration
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {}
+}));
+
+app.use(cookieParser('keyboard cat'));
+app.use(flash());
+
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
@@ -39,38 +52,22 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-//Configure flash
-app.use(cookieParser('keyboard cat'));
-app.use(flash());
-
-// Configure session
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {}
-}))
-
-//Configure passport strategy
 passport.use(new LocalStrategy(function(username, password, done) {
-  console.log('local strategy invoked');
   // Find user from database
   User.findOne({ username: username }, function(err, user) {
     if (err) { return done(err); }
     if (!user) {
       return done(null, false, { message: 'Incorrect username.' });
     }
-    return done(null, user);
-  });
-  
-  // Compare db password to entered one
-  bcrypt.compare(password, user.password, function(err, res) {
-    if (err) return done(err);
-    if (res === false) {
-      return done(null, false, { message: 'Incorrect password.' });
-    } else {
-      return done(null, user);
-    }
+    // Compare db password to entered one
+    bcrypt.compare(password, user.password, function(err, res) {
+      if (err) return done(err);
+      if (res === false) {
+        return done(null, false, { message: 'Incorrect password.' });
+      } else {
+        return done(null, user);
+      }
+    });
   });
 }));
 

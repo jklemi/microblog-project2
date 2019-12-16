@@ -14,6 +14,10 @@ router.get('/login', user_controller.user_login_get);
 
 router.post('/login', user_controller.user_login_post);
 
+router.get('/logout', user_controller.user_logout_get);
+
+router.post('/logout', user_controller.user_logout_post);
+
 router.get('/register', user_controller.user_register_get);
 
 router.post('/register', user_controller.user_register_post);

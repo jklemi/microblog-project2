@@ -11,7 +11,7 @@ exports.post_list = function(req, res, next) {
     .exec(function (err, list_posts) {
       if (err) { return next(err); }
       //Successful, so render
-      res.render('post_list', { title: 'Post List', post_list: list_posts });
+      res.render('post_list', { title: 'Post List', post_list: list_posts, loggedUser: req.user });
     });
 
 };
@@ -24,16 +24,11 @@ exports.post_detail = function(req, res) {
 // Display Post create form on GET.
 exports.post_create_get = function(req, res) {
 
-    // Get all users, which we can use for marking the creator of the post.
-    async.parallel({
-        users: function(callback) {
-            User.find(callback);
-        },
-    }, function(err, results) {
-        if (err) { return next(err); }
-        res.render('post_form', { title: 'Create New Post', users: results.users });
-    });
-
+    if (!req.user) {
+        res.render('unauthorized', {loggedUser: req.user});
+    } else {
+        res.render('post_form', { title: 'Create New Post', loggedUser: req.user });
+    }
 };
 
 // Handle Post create on POST.
@@ -55,33 +50,23 @@ exports.post_create_post = [
     var post = new Post(
       { 
         content: req.body.content,
-        creator: req.body.creator,
+        creator: req.user._id,
         time_created: Date.now()
       }
     );
 
-
     if (!errors.isEmpty()) {
-            // There are errors. Render form again with sanitized values/error messages.
-
-            // Get all users for form.
-            async.parallel({
-                users: function(callback) {
-                    User.find(callback);
-                },
-            }, function(err, results) {
-                if (err) { return next(err); }
-                res.render('post_form', { title: 'Create New Post', users:results.users, post: post, errors: errors.array() });
-            });
-            return;
+        // There are errors. Render form again with sanitized values/error messages.
+        res.render('post_form', { title: 'Create New Post', post: post, errors: errors.array(), loggedUser: req.user });
+        return;
     }
     else {
       // Data from form is valid.
       
       post.save(function (err) {
         if (err) { return next(err); }
-        // Post saved. Redirect to post detail page.
-        res.redirect(post.url);
+        // Post saved. Redirect to user detail page.
+        res.redirect(req.user.url);
       });
     }
   }

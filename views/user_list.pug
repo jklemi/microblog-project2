@@ -2,15 +2,12 @@ extends layout
 
 block content
   h1= title
+  p This is a list of all users who are registered to the site. You can view their posts by clicking on them.
   
   ul
     - user_list.sort(function(a, b) {let textA = a.username.toUpperCase(); let textB = b.username.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
     each user in user_list
-      li 
-        | Username: 
-        a(href=user.url) #{user.username} 
-        | , Password: 
-        |  #{user.password}
-
+      li. 
+        #[a(href=user.url) #{user.username}]
     else
       li There are no users.

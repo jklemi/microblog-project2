@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 var Schema = mongoose.Schema;
 
@@ -16,6 +17,13 @@ PostSchema
 .virtual('url')
 .get(function () {
   return '/home/post/' + this._id;
+});
+
+// Virtual for formatted creation time
+PostSchema
+.virtual('time_created_formatted')
+.get(function () {
+  return moment(this.time_created).format('dddd, MMMM Do, h:mm a');
 });
 
 module.exports = mongoose.model('Post', PostSchema);

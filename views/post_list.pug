@@ -2,14 +2,14 @@ extends layout
 
 block content
   h1= title
+  p This is a list of all posts by all users on this site to see what's new.
 
   ul
     each post in post_list
-      li= post.content 
-        |  Lähettäjä: 
-        | #{post.creator.username}
-        | , Lähetysaika: 
-        | #{post.time_created}
+      li
+        | #{post.content}
+        br
+        p.desc #{post.creator.username} | #{post.time_created_formatted}
 
     else
       li There are no posts.
