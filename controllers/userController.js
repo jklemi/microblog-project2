@@ -116,37 +116,38 @@ exports.user_register_post = [
 
     var user = new User;
     // Hash and salt password before storing
-    bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    bcrypt.hash(req.body.password, saltRounds).then(function (hash) {
       // Create a user object with escaped and trimmed data. 
       user.username = req.body.username;
       user.password = hash;
-    });
+    
 
-    if (!errors.isEmpty()) {
-      // There are errors. Render the form again with error messages.
-      res.render('register_form', { title: 'Register New User', user: user, errors: errors.array(), loggedUser: req.user});
-      return;
-    }
-    else {
-      // Data from form is valid.
-      // Check if User with same name already exists.
-      User.findOne({ 'username': req.body.username }).exec( function(err, found_user) {
-        if (err) { return next(err); }
-        if (found_user) {
-          // User exists, redirect to same page.
-          //res.send('User already exists.');
-          res.redirect('/');
-        }
-        else {
-          user.save(function (err) {
-            if (err) { return next(err); }
-            // User saved. Redirect to home page.
-            //res.send('User saved.');
-            res.redirect('/home');
-          });
-        }
-      });
-    }
+      if (!errors.isEmpty()) {
+        // There are errors. Render the form again with error messages.
+        res.render('register_form', { title: 'Register New User', user: user, errors: errors.array(), loggedUser: req.user});
+        return;
+      }
+      else {
+        // Data from form is valid.
+        // Check if User with same name already exists.
+        User.findOne({ 'username': req.body.username }).exec( function(err, found_user) {
+          if (err) { return next(err); }
+          if (found_user) {
+            // User exists, redirect to same page.
+            //res.send('User already exists.');
+            res.redirect('/');
+          }
+          else {
+            user.save(function (err) {
+              if (err) { return next(err); }
+              // User saved. Redirect to home page.
+              //res.send('User saved.');
+              res.redirect('/home');
+            });
+          }
+        });
+      }
+    });
   }
 ];
 
